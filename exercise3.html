@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>To-Do List with Local Storage</title>
+    <style>
+        body{
+            font-family:Arial,sans-serif;
+            max-width:600px;
+            margin:40px auto;
+            padding:20px;
+        }
+        input{
+            padding:10px;
+            width:65%;
+        }
+        button{
+            padding:10px;
+            cursor:pointer;
+        }
+        li{
+            margin:12px 0;
+        }
+        li button{
+            margin-left:10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <input type="text" id="taskInput" placeholder="Enter a task">
+    <button onclick="addTask()">Add Task</button>
+    <ul id="taskList"></ul>
+    <script>
+        //Read the tasks already saved from local storage;if there's no data,initialize as an empty array
+        let tasks=JSON.parse(localStorage.getItem("tasks")) || [];
+        //Display the saved tasks
+        function displayTasks(){
+            //Get the ul element that stores the task list
+            const taskList=document.getElementById("taskList");
+            //First clear the list's existing content to prevent duplicate rendering
+            taskList.innerHTML="";
+            //Loop through the tasks array and generate each task node one by one
+            for(let i=0;i<tasks.length;i++){
+                //Create li list item
+                const li=document.createElement("li");
+                //Create a span tag to hold the task text
+                const taskText=document.createElement("span");
+                //Create delete button
+                const deleteButton=document.createElement("button");
+                //Write the current task content into the span
+                taskText.textContent=tasks[i];
+                //Set the button text to Delete
+                deleteButton.textContent="Delete";
+                //Bind a click event to the delete button,and call the delete function with the current task index when clicked
+                deleteButton.onclick=function(){
+                    deleteTask(i);
+                };
+                //Add the task text node into the li
+                li.appendChild(taskText);
+                //Add a delete button inside the li
+                li.appendChild(deleteButton);
+                //Add li task item to ul list
+                taskList.appendChild(li);
+            }
+        }
+        //Add a new task
+        function addTask(){
+            //Get the input box element
+            const input=document.getElementById("taskInput");
+            //Remove leading and trailing spaces from input
+            const task=input.value.trim();
+            //Check if the input is empty
+            if(task===""){
+                alert("Please enter a task.");
+                return;
+            }
+            //Add new task to the tasks array
+            tasks.push(task);
+            //Convert the task array to a JSON string and save it to local storage for persistence
+            localStorage.setItem("tasks",JSON.stringify(tasks));
+            //Clear the input box
+            input.value="";
+            //Re-render the task list
+            displayTasks();
+        }
+        //Delete a task
+        function deleteTask(index){     //index is the array index of the task you want to delete
+            //Remove 1 element from a specified position in the array
+            tasks.splice(index,1);
+            //Update the task data in local storage
+            localStorage.setItem("tasks",JSON.stringify(tasks));
+            //Re-render the task list
+            displayTasks();
+        }
+        //Display saved tasks when the page loads
+        displayTasks();
+    </script>
+</body>
+</html>

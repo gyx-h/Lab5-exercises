@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>HTML5 Canvas Smiley Face</title>
+</head>
+<body>
+    <h1>HTML5 Canvas</h1>
+    <!-- Create a canvas,width and height 725,text inside displayed if the browser doesn't support canvas -->
+    <canvas id="myCanvas" width="725" height="725">
+        Your browser does not support HTML5 Canvas.
+    </canvas>
+    <script>
+        //Get the canvas element
+        const canvas=document.getElementById("myCanvas");
+        //Get the 2D drawing context,all drawing operations depend on ctx
+        const ctx=canvas.getContext("2d");
+        //Draw the light green background
+        ctx.fillStyle="#90EE90";
+        ctx.fillRect(0,0,725,725);
+        //Draw the Smiley face circle(yellow face)
+        ctx.beginPath();
+        //arc parameters:center x,center y,radius,start angle,end angle;Math.PI*2 is a full circle
+        ctx.arc(365,365,292,0,Math.PI*2);
+        ctx.fillStyle="#FFFF00";    //Fill with yellow
+        ctx.fill();
+        ctx.strokeStyle="#333333";      //Stroke color dark gray
+        ctx.lineWidth=2;    //Stroke line width 2px
+        ctx.stroke();   //Execute stroke
+        //Draw the left eye
+        ctx.beginPath();
+        ctx.arc(247,294,22,0,Math.PI*2);
+        ctx.fillStyle="#000000";    //Fill with black
+        ctx.fill();
+        //Draw the right eye
+        ctx.beginPath();
+        ctx.arc(481,294,22,0,Math.PI*2);
+        ctx.fill();
+        //Draw the nose(A vertical line)
+        ctx.beginPath();
+        ctx.moveTo(364,367);    //Move the brush to the starting point
+        ctx.lineTo(364,439);    //Draw a straight line to the endpoint
+        ctx.strokeStyle="#333333";
+        ctx.lineWidth=2;
+        ctx.stroke();
+        //Draw the smile
+        ctx.beginPath();
+        //Arc:center(365,442),radius 106,start 0.15π,end 0.85π
+        ctx.arc(365,442,106,0.15*Math.PI,0.85*Math.PI);
+        ctx.strokeStyle="#333333";
+        ctx.lineWidth=2;
+        ctx.stroke();
+        //Draw the text at the bottom
+        ctx.fillStyle="#006400";    //Text color dark green
+        ctx.font="bold 36px Arial";     //Font style: Bold 36px Arial
+        ctx.textAlign="center";     //Text horizontally center-aligned
+        //Fill text,parameters:text content,text baseline x-coordinate,text baseline y-coordinate
+        ctx.fillText("The Canvas brought me to life!",362,715);
+    </script>
+</body>
+</html>
